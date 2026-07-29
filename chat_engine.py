@@ -25,7 +25,7 @@ from database import get_shared_connection
 
 
 # ── LLM ───────────────────────────────────────────────────────────────────────
-llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
+llm = ChatGoogleGenerativeAI(model="gemini-3.6-flash")
 
 
 # ── State schema ──────────────────────────────────────────────────────────────
