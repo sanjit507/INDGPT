@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In</title>
+  <meta name="description" content="Sign in — Your AI-powered conversational assistant." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/index.css?v=2.1" />
+</head>
+<body>
+  <!-- Animated background orbs -->
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <main class="auth-container">
+    <!-- Logo -->
+    <div class="logo-wrap">
+      <div class="logo-icon">
+        <svg viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M37.532 16.87a9.963 9.963 0 00-.856-8.184 10.078 10.078 0 00-10.855-4.835A9.964 9.964 0 0018.306.5a10.079 10.079 0 00-9.614 6.977 9.967 9.967 0 00-6.664 4.834 10.08 10.08 0 001.24 11.817 9.965 9.965 0 00.856 8.185 10.079 10.079 0 0010.855 4.835 9.965 9.965 0 007.516 3.35 10.078 10.078 0 009.617-6.981 9.967 9.967 0 006.663-4.834 10.079 10.079 0 00-1.243-11.813z" fill="currentColor"/>
+        </svg>
+      </div>
+      <h1 class="logo-text">INDGPT</h1>
+    </div>
+
+    <!-- Auth Card -->
+    <div class="auth-card">
+      <!-- Tab switcher -->
+      <div class="tab-bar" role="tablist">
+        <button class="tab active" id="tab-login" role="tab" aria-selected="true" aria-controls="panel-login" onclick="switchTab('login')">Sign In</button>
+        <button class="tab" id="tab-register" role="tab" aria-selected="false" aria-controls="panel-register" onclick="switchTab('register')">Sign Up</button>
+        <div class="tab-slider"></div>
+      </div>
+
+      <!-- Login Panel -->
+      <div class="tab-panel active" id="panel-login" role="tabpanel">
+        <form id="form-login" onsubmit="handleLogin(event)" novalidate>
+          <div class="field-group">
+            <label class="field-label" for="login-email">Email address</label>
+            <input class="field-input" type="email" id="login-email" placeholder="you@example.com" required autocomplete="email" />
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="login-password">Password</label>
+            <input class="field-input" type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password" />
+          </div>
+          <div class="error-msg" id="login-error"></div>
+          <button class="btn-primary" type="submit" id="btn-login">
+            <span class="btn-text">Sign In</span>
+            <span class="btn-spinner" hidden>
+              <svg class="spin" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-dasharray="30 70"/></svg>
+            </span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Register Panel -->
+      <div class="tab-panel" id="panel-register" role="tabpanel">
+        <form id="form-register" onsubmit="handleRegister(event)" novalidate>
+          <div class="field-group">
+            <label class="field-label" for="reg-username">Username</label>
+            <input class="field-input" type="text" id="reg-username" placeholder="John Doe" required autocomplete="name" />
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="reg-email">Email address</label>
+            <input class="field-input" type="email" id="reg-email" placeholder="you@example.com" required autocomplete="email" />
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="reg-password">Password <span class="hint">(min 6 chars)</span></label>
+            <input class="field-input" type="password" id="reg-password" placeholder="••••••••" required minlength="6" autocomplete="new-password" />
+          </div>
+          <div class="error-msg" id="reg-error"></div>
+          <button class="btn-primary" type="submit" id="btn-register">
+            <span class="btn-text">Create Account</span>
+            <span class="btn-spinner" hidden>
+              <svg class="spin" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-dasharray="30 70"/></svg>
+            </span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Divider -->
+      <div class="divider"><span>or</span></div>
+
+      <!-- Guest Mode -->
+      <button class="btn-guest" id="btn-guest" onclick="continueAsGuest()">
+        Continue as Guest
+        <span class="guest-badge">5 messages free</span>
+      </button>
+      <p class="guest-note">Guest chats are temporary and not saved after you close the browser.</p>
+    </div>
+  </main>
+
+  <script src="/static/js/auth.js?v=2.1"></script>
+</body>
+</html>

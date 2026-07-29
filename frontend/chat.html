@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>INDGPT</title>
+  <meta name="description" content="INDGPT — AI-powered conversations with persistent memory." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Markdown rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- Code highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <link rel="stylesheet" href="/static/css/chat.css?v=2.1" />
+</head>
+<body>
+
+<!-- ── Sidebar ─────────────────────────────────────────────────────────────── -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M37.532 16.87a9.963 9.963 0 00-.856-8.184 10.078 10.078 0 00-10.855-4.835A9.964 9.964 0 0018.306.5a10.079 10.079 0 00-9.614 6.977 9.967 9.967 0 00-6.664 4.834 10.08 10.08 0 001.24 11.817 9.965 9.965 0 00.856 8.185 10.079 10.079 0 0010.855 4.835 9.965 9.965 0 007.516 3.35 10.078 10.078 0 009.617-6.981 9.967 9.967 0 006.663-4.834 10.079 10.079 0 00-1.243-11.813z" fill="currentColor"/>
+        </svg>
+      </div>
+      <span class="brand-name">INDGPT</span>
+    </div>
+    <button class="icon-btn sidebar-toggle-btn" id="sidebar-close" onclick="toggleSidebar()" title="Close sidebar" aria-label="Close sidebar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <button class="new-chat-btn" id="btn-new-chat" onclick="startNewChat()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+    New chat
+  </button>
+
+  <div class="sidebar-section-label" id="thread-list-label">Recent chats</div>
+  <nav class="thread-list" id="thread-list" aria-label="Conversation history"></nav>
+
+  <!-- User info at bottom -->
+  <div class="sidebar-footer" id="sidebar-footer">
+    <div class="user-info" id="user-info"></div>
+    <div class="footer-actions">
+      <button class="footer-btn danger-btn" id="btn-clear-all" onclick="clearAllChats()" title="Clear all chats">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+        Clear all
+      </button>
+      <button class="footer-btn" id="btn-logout" onclick="logout()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/></svg>
+        Sign out
+      </button>
+    </div>
+  </div>
+</aside>
+
+<!-- Backdrop overlay for mobile sidebar -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebarMobile()"></div>
+
+<!-- ── Main Chat Area ──────────────────────────────────────────────────────── -->
+<div class="main-wrap">
+  <!-- Top bar -->
+  <header class="topbar">
+    <button class="icon-btn" id="sidebar-open" onclick="toggleSidebar()" title="Open sidebar" aria-label="Open sidebar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="topbar-model">
+      <span id="model-label"></span>
+    </div>
+    <div class="topbar-right" id="topbar-right"></div>
+  </header>
+
+  <!-- Messages -->
+  <div class="messages-wrap" id="messages-wrap">
+    <!-- Welcome screen (shown when no messages) -->
+    <div class="welcome-screen" id="welcome-screen">
+      <div class="welcome-icon">
+        <svg viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M37.532 16.87a9.963 9.963 0 00-.856-8.184 10.078 10.078 0 00-10.855-4.835A9.964 9.964 0 0018.306.5a10.079 10.079 0 00-9.614 6.977 9.967 9.967 0 00-6.664 4.834 10.08 10.08 0 001.24 11.817 9.965 9.965 0 00.856 8.185 10.079 10.079 0 0010.855 4.835 9.965 9.965 0 007.516 3.35 10.078 10.078 0 009.617-6.981 9.967 9.967 0 006.663-4.834 10.079 10.079 0 00-1.243-11.813z" fill="currentColor"/>
+        </svg>
+      </div>
+      <h2 class="welcome-title" id="welcome-title">How can I help you today?</h2>
+  
+    </div>
+    <!-- Messages rendered here -->
+    <div class="messages-list" id="messages-list"></div>
+  </div>
+
+  <!-- Input area -->
+  <div class="input-area">
+    <div class="input-wrap" id="input-wrap">
+      <textarea
+        id="chat-input"
+        class="chat-textarea"
+        placeholder="Message INDGPT…"
+        rows="1"
+        onkeydown="handleKeydown(event)"
+        oninput="autoResize(this)"
+        aria-label="Chat message input"
+      ></textarea>
+      <button class="send-btn" id="send-btn" onclick="sendMessage()" aria-label="Send message" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+    <p class="input-footer-note">
+      <span id="guest-counter" style="display:none"></span>
+      INDGPT may produce inaccurate information. Verify important facts.
+    </p>
+  </div>
+</div>
+
+<!-- ── Guest Limit Modal ───────────────────────────────────────────────────── -->
+<div class="modal-overlay" id="modal-overlay" hidden onclick="closeModal(event)">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-icon">🔒</div>
+    <h3 class="modal-title" id="modal-title">You've reached the guest limit</h3>
+    <p class="modal-body">Guest users can send <strong>5 messages</strong> across <strong>2 conversations</strong>. Create a free account to unlock unlimited chats with persistent history.</p>
+    <div class="modal-actions">
+      <button class="btn-modal-primary" onclick="goToAuth('register')">Create Free Account</button>
+      <button class="btn-modal-secondary" onclick="closeModal()">Maybe later</button>
+    </div>
+  </div>
+</div>
+
+<script src="/static/js/chat.js?v=2.1"></script>
+</body>
+</html>
