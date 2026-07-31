@@ -25,7 +25,7 @@ from database import get_shared_connection
 
 
 # ── LLM ───────────────────────────────────────────────────────────────────────
-llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
+llm = ChatGoogleGenerativeAI(model="gemini-3.6-flash")
 
 
 # ── State schema ──────────────────────────────────────────────────────────────
@@ -36,7 +36,15 @@ class ChatState(TypedDict):
 # ── Graph factory ─────────────────────────────────────────────────────────────
 def _build_graph(checkpointer):
     def chat_node(state: ChatState):
-        return {"messages": [llm.invoke(state["messages"])]}
+        from langchain_core.messages import SystemMessage
+        system_msg = SystemMessage(
+            content=(
+                "You are a helpful, concise assistant. "
+                "Answer accurately in as few words as possible. "
+                "Avoid filler, repetition, and extra preamble to save output tokens."
+            )
+        )
+        return {"messages": [llm.invoke([system_msg] + state["messages"])]}
 
     g = StateGraph(ChatState)
     g.add_node("chat_node", chat_node)
