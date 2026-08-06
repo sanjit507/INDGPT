@@ -3,6 +3,12 @@
 **INDGPT** is a full-stack conversational AI platform built with **FastAPI**, **LangGraph**, **Google Gemini AI**, and SQLite persistence. It features user authentication (JWT), session memory, guest & authenticated chat modes, real-time response streaming, and interactive chat history management.
 
 ---
+<img width="1904" height="916" alt="image" src="https://github.com/user-attachments/assets/4c61a417-be4b-40ab-a015-4b79af29d942" />
+
+
+<img width="1919" height="960" alt="image" src="https://github.com/user-attachments/assets/0b2dc2d0-06cb-469d-af76-4751b2a0edfc" />
+
+
 
 ## 🌟 Key Features
 
